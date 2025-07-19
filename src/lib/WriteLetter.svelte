@@ -1,7 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { fade, fly } from 'svelte/transition';
-  
   const dispatch = createEventDispatcher();
   
   let content = '';
@@ -10,7 +9,7 @@
   function handleSend() {
     if (content.trim() && !isSending) {
       isSending = true;
-      // 触发投递动画
+      // Trigger send animation
       setTimeout(() => {
         dispatch('send', content);
         content = '';
@@ -96,16 +95,21 @@
   }
   
   .paper {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 10px;
-    padding: 2rem;
-    max-width: 600px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 650px;
     width: 100%;
-    max-height: 80vh;
+    max-height: 85vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   }
   
   .paper.sending {
@@ -114,10 +118,26 @@
   }
   
   .page-title {
-    color: #1E3A8A;
-    margin-bottom: 1.5rem;
+    color: var(--ocean-dark);
+    margin-bottom: 2rem;
     text-align: center;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.05rem;
+    position: relative;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--ocean-medium), transparent);
+    border-radius: 2px;
   }
   
   .letter-content {
@@ -128,22 +148,28 @@
   
   textarea {
     width: 100%;
-    min-height: 300px;
-    padding: 1rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    line-height: 1.6;
+    min-height: 320px;
+    padding: 1.5rem;
+    border: 2px solid rgba(107, 182, 255, 0.2);
+    border-radius: 12px;
+    font-size: 1.15rem;
+    line-height: 1.8;
     resize: none;
     font-family: inherit;
     color: #333;
-    background: rgba(255, 255, 255, 0.8);
-    transition: border-color 0.3s ease;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
   }
   
   textarea:focus {
     outline: none;
-    border-color: #4682B4;
+    border-color: var(--ocean-medium);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 
+      inset 0 2px 4px rgba(0, 0, 0, 0.05),
+      0 0 0 3px rgba(107, 182, 255, 0.1);
   }
   
   textarea::placeholder {
@@ -158,13 +184,16 @@
   }
   
   .btn {
-    padding: 0.8rem 2rem;
+    padding: 1rem 2.5rem;
     border: none;
-    border-radius: 25px;
-    font-size: 1rem;
+    border-radius: 30px;
+    font-size: 1.05rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
     font-weight: 500;
+    letter-spacing: 0.02rem;
+    position: relative;
+    overflow: hidden;
   }
   
   .btn:disabled {
@@ -173,23 +202,44 @@
   }
   
   .cancel-btn {
-    background: #e0e0e0;
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
     color: #666;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   }
   
   .cancel-btn:hover:not(:disabled) {
-    background: #d0d0d0;
+    background: linear-gradient(135deg, #e8e8e8, #d0d0d0);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
   }
   
   .send-btn {
-    background: #4682B4;
+    background: linear-gradient(135deg, var(--ocean-medium), var(--ocean-deep));
     color: white;
+    box-shadow: 0 4px 15px rgba(107, 182, 255, 0.3);
+  }
+  
+  .send-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
   }
   
   .send-btn:hover:not(:disabled) {
-    background: #5691C3;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(70, 130, 180, 0.3);
+    background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-dark));
+    transform: translateY(-3px);
+    box-shadow: 
+      0 8px 25px rgba(107, 182, 255, 0.4),
+      0 0 20px rgba(107, 182, 255, 0.2);
+  }
+  
+  .send-btn:hover:not(:disabled)::before {
+    left: 100%;
   }
   
   .sending-animation {
@@ -202,7 +252,8 @@
   }
   
   .bottle {
-    font-size: 4rem;
+    font-size: 5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     animation: bob 1s ease-in-out infinite;
   }
   
