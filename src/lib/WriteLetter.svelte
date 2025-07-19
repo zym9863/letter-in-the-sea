@@ -49,7 +49,7 @@
 也许某天，会有人读到你的故事..."
         disabled={isSending}
         on:input={adjustTextareaHeight}
-      />
+      ></textarea>
     </div>
     
     <div class="actions">
